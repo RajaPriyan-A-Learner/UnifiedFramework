@@ -5,65 +5,97 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch: # Allows manual trigger from GitHub UI
+  workflow_dispatch:
 
 jobs:
   build:
     name: Build & Restore
-    runs-on: windows-latest # Windows is best for a mix of Selenium/Appium/k6
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x' # Use your project's version (8.0 or 10.0)
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build Solution
-        run: dotnet build --no-restore --configuration Release
+          dotnet-version: '8.0.x'
+      - run: dotnet restore
+      - run: dotnet build --no-restore --configuration Release
 
   test-suite:
     needs: build
     runs-on: windows-latest
     strategy:
-      fail-fast: false # Don't stop if one browser fails
+      fail-fast: false
       matrix:
-        # This runs 3 parallel jobs!
         category: [API, UI, Accessibility]
         browser: [Chrome, Edge]
         exclude:
           - category: API
-            browser: Edge # No need to run API tests twice on different browsers
-
+            browser: Edge
     steps:
       - uses: actions/checkout@v4
-
       - name: Execute Tests
-        # Passing Browser as a parameter for UI/Accessibility layers
         run: >
           dotnet test --configuration Release 
           --filter "Category=${{ matrix.category }}" 
           --test-param Browser=${{ matrix.browser }}
+          --logger "allure"
+      
+      - name: Upload Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.category }}-${{ matrix.browser }}
+          path: '**/allure-results'
 
   mobile-tests:
-    needs: build
-    runs-on: ubuntu-latest # Mobile tests don't need Windows-specific drivers
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run Appium on BrowserStack
-        env:
-          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-        run: dotnet test --filter "Category=Mobile" --test-param Platform=Android
-
-  performance-report:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run NBomber Load Test
-        # NBomber runs as a console app or NUnit test
-        run: dotnet test --filter "Category=Performance"
+      - name: Run Appium
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        run: dotnet test --filter "Category=Mobile" --test-param Platform=Android --logger "allure"
+      
+      - name: Upload Mobile Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-mobile
+          path: '**/allure-results'
+
+  report-generation:
+    name: Allure Reporting
+    needs: [test-suite, mobile-tests] # Wait for all tests to finish
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download All Results
+        uses: actions/download-artifact@v4
+        with:
+          path: all-results
+          merge-multiple: true # Combines all uploaded results into one folder
+
+      - name: Get Allure history
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Generate Allure Report
+        uses: simple-elf/allure-report-action@v1.7
+        with:
+          allure_results: all-results
+          gh_pages: gh-pages
+          allure_report: allure-report
+          allure_history: allure-history
+
+      - name: Deploy report to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-history

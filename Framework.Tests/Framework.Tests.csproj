@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Allure.Net.Commons" Version="2.14.1" />
     <PackageReference Include="Allure.NUnit" Version="2.14.1" />
     <PackageReference Include="FluentAssertions" Version="8.8.0" />
     <PackageReference Include="FluentAssertions.Json" Version="8.0.0" />
@@ -26,6 +27,12 @@
     <ProjectReference Include="..\Framework.Core\Framework.Core.csproj" />
     <ProjectReference Include="..\Framework.Mobile\Framework.Mobile.csproj" />
     <ProjectReference Include="..\Framework.Selenium\Framework.Selenium.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Allure.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

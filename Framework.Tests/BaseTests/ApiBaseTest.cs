@@ -1,4 +1,5 @@
-﻿using Framework.API;
+﻿using Allure.NUnit;
+using Framework.API;
 using Framework.API.Wrapper;
 using Framework.Core.Interfaces;
 using NUnit.Framework;
@@ -6,6 +7,7 @@ using System;
 
 namespace Framework.Tests
 {
+    [AllureNUnit]
     public class ApiBaseTest
     {
         protected IApiClient Api { get; private set; }
