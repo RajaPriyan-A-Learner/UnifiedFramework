@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Allure.NUnit;
 using Framework.Core.Interfaces;
 using Framework.Mobile;
 using NUnit.Framework;
+using System;
 
 namespace Framework.Tests
 {
+    [AllureNUnit]
     public class MobileBaseTest
     {
         protected IMobileUI App { get; private set; }

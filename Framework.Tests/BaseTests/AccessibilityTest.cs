@@ -1,4 +1,5 @@
-﻿using Framework.Accessibility;
+﻿using Allure.NUnit;
+using Framework.Accessibility;
 using Framework.Core.Enums;
 using Framework.Core.Interfaces;
 using NUnit.Framework;
@@ -6,6 +7,7 @@ using OpenQA.Selenium;
 
 namespace Framework.Tests.BaseTests
 {
+    [AllureNUnit]
     // Use the primary constructor to pass the browserType directly to the base class
     public class AccessibilityBaseTest(BrowserType browserType) : UIBaseTest(browserType)
     {

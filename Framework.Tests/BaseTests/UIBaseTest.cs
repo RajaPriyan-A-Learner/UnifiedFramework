@@ -1,12 +1,16 @@
-﻿using Framework.Core.Enums;
+﻿using Allure.Net.Commons;
+using Allure.NUnit;
+using Framework.Core.Enums;
 using Framework.Core.Interfaces;
 using Framework.Selenium;
 using Framework.Selenium.Utilities;
 using Framework.Selenium.Wrapper;
 using NUnit.Framework;
+using OpenQA.Selenium;
 
 namespace Framework.Tests.BaseTests
 {
+    [AllureNUnit]
     public class UIBaseTest
     {
         protected IWebUI UI { get; private set; }
@@ -29,7 +33,18 @@ namespace Framework.Tests.BaseTests
         [TearDown]
         public void TearDown()
         {
+            if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
+            {
+                AddScreenshotToAllure();
+            }
             UI?.Quit();
+        }
+
+        private void AddScreenshotToAllure()
+        {
+            var driver = (ITakesScreenshot)UI.GetDriver();
+            byte[] screenshot = driver.GetScreenshot().AsByteArray;
+            AllureApi.AddAttachment("Screenshot", "image/png", screenshot);
         }
     }
 }
