@@ -1,0 +1,45 @@
+services:
+  postgres-db:
+    image: postgres:11-alpine
+    environment:
+      - POSTGRES_DB=healenium
+      - POSTGRES_USER=healenium_user
+      - POSTGRES_PASSWORD=healenium_password
+    ports:
+      - "5432:5432"
+
+  hlm-backend:
+    image: healenium/hlm-backend:3.5.0
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/healenium
+      - SPRING_DATASOURCE_USERNAME=healenium_user
+      - SPRING_DATASOURCE_PASSWORD=healenium_password
+    ports:
+      - "7878:7878"
+    depends_on:
+      - postgres-db
+
+  # Added the missing Imitator component
+  selector-imitator:
+    image: healenium/hlm-selector-imitator:1.6
+    ports:
+      - "8000:8000"
+
+  selenium-grid:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+
+  # Corrected version to 2.1.9 and updated environment variables
+  hlm-proxy:
+    image: healenium/hlm-proxy:2.1.9
+    environment:
+      - HEALENIUM_SERVER_URL=http://hlm-backend:7878
+      - SELENIUM_SERVER_URL=http://selenium-grid:4444
+      - IMITATE_SERVICE=http://selector-imitator:8000
+    ports:
+      - "8085:8085"
+    depends_on:
+      - hlm-backend
+      - selenium-grid
+      - selector-imitator

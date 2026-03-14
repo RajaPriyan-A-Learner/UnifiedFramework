@@ -1,0 +1,69 @@
+name: Unified Framework CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  build:
+    name: Build & Restore
+    runs-on: windows-latest # Windows is best for a mix of Selenium/Appium/k6
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x' # Use your project's version (8.0 or 10.0)
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build Solution
+        run: dotnet build --no-restore --configuration Release
+
+  test-suite:
+    needs: build
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false # Don't stop if one browser fails
+      matrix:
+        # This runs 3 parallel jobs!
+        category: [API, UI, Accessibility]
+        browser: [Chrome, Edge]
+        exclude:
+          - category: API
+            browser: Edge # No need to run API tests twice on different browsers
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Execute Tests
+        # Passing Browser as a parameter for UI/Accessibility layers
+        run: >
+          dotnet test --configuration Release 
+          --filter "Category=${{ matrix.category }}" 
+          --test-param Browser=${{ matrix.browser }}
+
+  mobile-tests:
+    needs: build
+    runs-on: ubuntu-latest # Mobile tests don't need Windows-specific drivers
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Appium on BrowserStack
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        run: dotnet test --filter "Category=Mobile" --test-param Platform=Android
+
+  performance-report:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run NBomber Load Test
+        # NBomber runs as a console app or NUnit test
+        run: dotnet test --filter "Category=Performance"

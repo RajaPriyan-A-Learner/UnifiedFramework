@@ -1,0 +1,9 @@
+﻿namespace Framework.Core.Enums
+{
+    public enum BrowserType
+    {
+        Chrome,
+        Firefox,
+        Edge
+    }
+}

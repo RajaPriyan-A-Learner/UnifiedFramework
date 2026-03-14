@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="docker-compose.yml" />
+  </Folder>
+  <Project Path="Framework.Accessibility/Framework.Accessibility.csproj" />
+  <Project Path="Framework.API/Framework.API.csproj" />
+  <Project Path="Framework.Core/Framework.Core.csproj" />
+  <Project Path="Framework.Mobile/Framework.Mobile.csproj" />
+  <Project Path="Framework.Performance/Framework.Performance.csproj" />
+  <Project Path="Framework.Selenium/Framework.Selenium.csproj" />
+  <Project Path="Framework.Tests/Framework.Tests.csproj" />
+</Solution>
