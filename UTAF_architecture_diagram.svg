@@ -1,0 +1,76 @@
+<svg width="100%" viewBox="0 0 680 416" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- Background -->
+<rect width="680" height="416" fill="#ffffff"/>
+
+<!-- Title -->
+<text font-size="15" font-weight="500" x="340" y="26" text-anchor="middle" fill="#1a1a1a">Unified Test Automation Framework (UTAF)</text>
+
+<!-- CI/CD Layer -->
+<rect x="40" y="40" width="600" height="44" rx="8" fill="#f1efe8" stroke="#b4b2a9" stroke-width="0.5"/>
+<text font-size="14" font-weight="500" x="340" y="58" text-anchor="middle" dominant-baseline="central" fill="#2c2c2a">CI/CD pipeline</text>
+<text font-size="12" x="340" y="74" text-anchor="middle" dominant-baseline="central" fill="#5f5e5a">GitHub Actions · Azure DevOps · docker-compose.yml</text>
+
+<!-- Arrow -->
+<line x1="340" y1="84" x2="340" y2="108" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Framework.Tests Layer -->
+<rect x="40" y="108" width="600" height="52" rx="8" fill="#eeedfe" stroke="#afa9ec" stroke-width="0.5"/>
+<text font-size="14" font-weight="500" x="340" y="126" text-anchor="middle" dominant-baseline="central" fill="#26215c">Framework.Tests</text>
+<text font-size="12" x="340" y="144" text-anchor="middle" dominant-baseline="central" fill="#534ab7">SpecFlow BDD feature files · NUnit test runner · step definitions</text>
+
+<!-- Arrow -->
+<line x1="340" y1="160" x2="340" y2="180" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Framework.Core Layer -->
+<rect x="40" y="180" width="600" height="52" rx="8" fill="#e1f5ee" stroke="#5dcaa5" stroke-width="0.5"/>
+<text font-size="14" font-weight="500" x="340" y="198" text-anchor="middle" dominant-baseline="central" fill="#04342c">Framework.Core</text>
+<text font-size="12" x="340" y="216" text-anchor="middle" dominant-baseline="central" fill="#0f6e56">Composition Root · dependency injection · shared utilities · base classes</text>
+
+<!-- Arrow -->
+<line x1="340" y1="232" x2="340" y2="252" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Module boxes -->
+<!-- API -->
+<rect x="44" y="252" width="112" height="60" rx="8" fill="#e6f1fb" stroke="#85b7eb" stroke-width="0.5"/>
+<text font-size="14" font-weight="500" x="100" y="274" text-anchor="middle" dominant-baseline="central" fill="#042c53">API</text>
+<text font-size="12" x="100" y="294" text-anchor="middle" dominant-baseline="central" fill="#185fa5">RestSharp</text>
+
+<!-- Selenium -->
+<rect x="164" y="252" width="112" height="60" rx="8" fill="#e6f1fb" stroke="#85b7eb" stroke-width="0.5"/>
+<text font-size="14" font-weight="500" x="220" y="274" text-anchor="middle" dominant-baseline="central" fill="#042c53">Selenium</text>
+<text font-size="12" x="220" y="294" text-anchor="middle" dominant-baseline="central" fill="#185fa5">WebDriver · POM</text>
+
+<!-- Mobile -->
+<rect x="284" y="252" width="112" height="60" rx="8" fill="#e6f1fb" stroke="#85b7eb" stroke-width="0.5"/>
+<text font-size="14" font-weight="500" x="340" y="274" text-anchor="middle" dominant-baseline="central" fill="#042c53">Mobile</text>
+<text font-size="12" x="340" y="294" text-anchor="middle" dominant-baseline="central" fill="#185fa5">Mobile apps</text>
+
+<!-- Performance -->
+<rect x="404" y="252" width="112" height="60" rx="8" fill="#e6f1fb" stroke="#85b7eb" stroke-width="0.5"/>
+<text font-size="14" font-weight="500" x="460" y="274" text-anchor="middle" dominant-baseline="central" fill="#042c53">Performance</text>
+<text font-size="12" x="460" y="294" text-anchor="middle" dominant-baseline="central" fill="#185fa5">Load testing</text>
+
+<!-- A11y -->
+<rect x="524" y="252" width="112" height="60" rx="8" fill="#e6f1fb" stroke="#85b7eb" stroke-width="0.5"/>
+<text font-size="14" font-weight="500" x="580" y="274" text-anchor="middle" dominant-baseline="central" fill="#042c53">A11y</text>
+<text font-size="12" x="580" y="294" text-anchor="middle" dominant-baseline="central" fill="#185fa5">WCAG checks</text>
+
+<!-- Arrow -->
+<line x1="340" y1="312" x2="340" y2="332" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Docker/K8s -->
+<rect x="44" y="332" width="280" height="44" rx="8" fill="#faeeda" stroke="#ef9f27" stroke-width="0.5"/>
+<text font-size="14" font-weight="500" x="184" y="350" text-anchor="middle" dominant-baseline="central" fill="#412402">Docker · Kubernetes</text>
+<text font-size="12" x="184" y="366" text-anchor="middle" dominant-baseline="central" fill="#854f0b">Containerised parallel test runs</text>
+
+<!-- Allure -->
+<rect x="356" y="332" width="280" height="44" rx="8" fill="#faeeda" stroke="#ef9f27" stroke-width="0.5"/>
+<text font-size="14" font-weight="500" x="496" y="350" text-anchor="middle" dominant-baseline="central" fill="#412402">Allure Reports</text>
+<text font-size="12" x="496" y="366" text-anchor="middle" dominant-baseline="central" fill="#854f0b">Test results · Trend dashboards</text>
+</svg>
